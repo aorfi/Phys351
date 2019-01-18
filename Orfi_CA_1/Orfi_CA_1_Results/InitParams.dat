@@ -1,0 +1,9 @@
+Mass 5.000000
+Initial Position 3.000000
+Initial Momentum 4.000000
+Initial Time 2.000000
+Final Time 3.000000
+Number of Time Intervals 5
+Time Step Size 0.200000
+Number of Diff Equations 3
+Spring Constant 7.000000
