@@ -8,8 +8,8 @@ typedef struct params{
     double t_i;  //initial time
     double t_f;  //final time
     int it_max;  //number of time intervals
+    int choice; //algorithm choice
     double h;    //time step size
-    double choice; //alorithm choice
     int num_eq;  //number of first order diff equations
     double k_spring; //for SHO
 }

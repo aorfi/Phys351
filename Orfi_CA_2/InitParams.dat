@@ -1,0 +1,10 @@
+Mass 2.000000e+00
+Initial Position 1.000000e+00
+Initial Momentum 5.000000e-01
+Initial Time 0.000000e+00
+Final Time 5.000000e+02
+Number of Time Intervals 1500
+Time Step Size 3.333333e-01
+Choice 1
+Number of Diff Equations 1
+Spring Constant 1.000000e-01
