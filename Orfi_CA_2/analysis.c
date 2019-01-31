@@ -14,7 +14,7 @@ void WriteResults(double *x, double *p){
     for(it = 0; it < it_max; it++){
         t = h*it;
         GetXP(x, p, &x_now, &p_now, it);
-        fprintf(output, "%e %e %e" , t, x_now, p_now);
+        fprintf(output, "\n%e  %e %e" , t, x_now, p_now);
     }
     fclose(output);
     return;
