@@ -11,6 +11,6 @@ import numpy as np
 
 
 d = s.data.load(filters="*.dat")
-plt.plot(d[1],d[2],'b^')
+plt.plot(d[1],d[2],'b')
 #plt.gca().legend(('Column 1', 'Column 2' ))
 plt.show

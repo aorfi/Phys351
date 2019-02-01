@@ -69,25 +69,22 @@ void BackwardEulerStep(double x_now, double p_now, double *x_next, double *p_nex
     double err, TOL;
     int iter, iter_max;
     iter_max = 100;
-    TOL = 10^(-10);
+    TOL = pow(10,-10);
     x_1 = x_now;
     p_1 = p_now;
     for(iter = 0; iter < iter_max; iter++){
         OneStep(x_now, p_now, x_1, p_1, &x_2, &p_2, h);
         err = fabs(p_2-p_1)+fabs(x_2-x_1);
-        if(err < TOL){
-            break;
-        }
         p_1 = p_2;
         x_1 = x_2;
-        if(err >= TOL){
+    }
+    if(err >= TOL){
         fprintf(stderr, "could not converge");
         exit(1);//exits the program
-        }
-        else{
+    }
+    else{
         *x_next = x_2;
         *p_next = p_2;
-        }
     }
     return;
 }
