@@ -1,5 +1,6 @@
 #ifndef VECTOR_MTX_H //make sure header is included only once
 #define VECTOR_MTX_H 
+//calls vector_malloc, mtx_malloc, mtx_free, CopyVector, int_vector_malloc
 
 
 double *vector_malloc(int nmax);//vector allocation

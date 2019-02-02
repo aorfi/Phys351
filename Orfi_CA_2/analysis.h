@@ -1,5 +1,6 @@
 #ifndef ANALYSIS_H
 #define ANALYSIS_H
+//calls WriteResults and GetXP
 
 void WriteResults(double *x, double *p);
 void GetXP(double *x, double *p, double *x_now, double *p_now, int it);

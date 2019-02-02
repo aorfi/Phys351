@@ -1,5 +1,6 @@
 #ifndef EVOLVE_H
 #define EVOLVE_H
+//calls AdvanceOneStep, OneStep, ForwardEulerStep, BackwardEulerStep, Leapfrog1Step, Leapfrog2Step
 
 void AdvanceOneStep(double *x, double *p, int it_now, int choice);
 void OneStep(double x_now, double p_now, double x_in, double p_in, double *x_next, double *p_next, double h);

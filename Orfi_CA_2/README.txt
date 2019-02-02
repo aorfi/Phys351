@@ -1,0 +1,1 @@
+Compile main.c init.c forces.c analysis.c vector_mtx.c evolve.c together then run main Orfi_input
