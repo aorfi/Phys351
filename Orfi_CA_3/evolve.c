@@ -17,17 +17,15 @@ void EvolveNeq(double *q){
     FILE *output;
     output = fopen("Orfi_results.dat", "w"); //open file for writing, write each value
     printf("test1\n");
-    fprintf(output, "HELLO" );
     
-
+    num_eq = PARAM_DATA.num_eq;
     t_i = PARAM_DATA.t_i;
     t_f = PARAM_DATA.t_f;
     h = PARAM_DATA.h;
     it_max = PARAM_DATA.it_max;
     QVelos = PARAM_DATA.QVelos;
     q_next = vector_malloc(PARAM_DATA.num_eq);//allocated memory for q
-    
-    
+       
     t_now = t_i;//set this to start
     printf("test2\n");
     
@@ -39,14 +37,15 @@ void EvolveNeq(double *q){
     
 
     for(it = 0; it < it_max; it++){
-        //RecordAStep(output, t_now, q, num_eq);//t_i
+        RecordAStep(output, t_now, q, num_eq);//t_i
         RK4Step(q, q_next, QVelos, t_now, h, num_eq);
         q_tmp = q;
         q = q_next;
         q_next = q_tmp;
+        t_now = t_now+h;
     }
+    RecordAStep(output, t_now, q, num_eq);//t_f
     fclose(output);//close files
-    //RecordAStep(output, t_now, q, num_eq);//t_f
     
 }
 
@@ -78,19 +77,19 @@ void RK4Step(double *q, double *q_next, FuncPt *QVelos, double t_now, double h, 
     t_next = t_now + h;
     Vector_Clear(q_sum, num_eq);
     OneStepNeq(q, q, q_local, QVelos, t_now, 0.5*h, num_eq);//RK fist step
-    // Vector_APlusScaledBtoA(q_sum, q_local, 1.0/3.0, num_eq);//add 1/3 of the first vector to q_sum
+    Vector_APlusScaledBtoA(q_sum, q_local, 1.0/3.0, num_eq);//add 1/3 of the first vector to q_sum
     
-    // OneStepNeq(q, q_local, q_next, QVelos, t_half, 0.5*h, num_eq);//RK second step
-    // Vector_APlusScaledBtoA(q_sum, q_next, 2.0/3.0, num_eq);//add 2/3 of the second vector to q_sum
+    OneStepNeq(q, q_local, q_next, QVelos, t_half, 0.5*h, num_eq);//RK second step
+    Vector_APlusScaledBtoA(q_sum, q_next, 2.0/3.0, num_eq);//add 2/3 of the second vector to q_sum
     
-    // OneStepNeq(q, q_next, q_local, QVelos, t_half, h, num_eq);//RK third step
-    // Vector_APlusScaledBtoA(q_sum, q_local, 2.0/3.0, num_eq);//add 1/3 of the third vector to q_sum
+    OneStepNeq(q, q_next, q_local, QVelos, t_half, h, num_eq);//RK third step
+    Vector_APlusScaledBtoA(q_sum, q_local, 2.0/3.0, num_eq);//add 1/3 of the third vector to q_sum
    
-    // OneStepNeq(q, q_local, q_next, QVelos, t_next, h, num_eq);//RK fourth step
-    // Vector_APlusScaledBtoA(q_sum, q_next, 2.0/3.0, num_eq);//add 1/6 of the fourth vector to q_sum
+    OneStepNeq(q, q_local, q_next, QVelos, t_next, h, num_eq);//RK fourth step
+    Vector_APlusScaledBtoA(q_sum, q_next, 2.0/3.0, num_eq);//add 1/6 of the fourth vector to q_sum
 
-    // Vector_APlusScaledBtoA(q_sum, q, -1.0/2.0, num_eq);//add -1/2 of q to q_sum
+    Vector_APlusScaledBtoA(q_sum, q, -1.0/2.0, num_eq);//add -1/2 of q to q_sum
 
-    // Vector_Copy(q_sum, q_next, num_eq);
+    Vector_Copy(q_sum, q_next, num_eq);
     return;
 }
