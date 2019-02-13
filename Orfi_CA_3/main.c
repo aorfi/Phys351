@@ -14,13 +14,11 @@ int main(int argc, char **argv){
 
 
     ReadInParams(input_file); //gets parameters from input file
-    //printf("hello1\n");
     PrintParams();//prints parameters
-    //printf("hello2\n");
 
-   // q = vector_malloc(PARAM_DATA.num_eq);//allocated memory for q
+    q = vector_malloc(PARAM_DATA.num_eq);//allocated memory for q
 
-    //InitializeNeq(q);
+    InitializeNeq(q);
 
     //EvolveNew(q);
 

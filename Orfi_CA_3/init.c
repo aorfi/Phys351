@@ -2,36 +2,29 @@
 #include <stdlib.h>
 #include <math.h>
 #include "params.h"
+#include "forces.h"
 #include "init.h"
 #include "vector_mtx.h"
 
 void ReadInParams(char *input_file){
     FILE *input; // Order of reading-in: mass, x_i, p_i, t_i, t_f, it_max,choice, num_eq, k_spring
     input = fopen(input_file, "r");//open file for reading, read all values
-    fscanf(input, "num_eq = %d", &PARAM_DATA.num_eq);
-    PARAM_DATA.q_i = vector_malloc(PARAM_DATA.num_eq);
-    PARAM_DATA.I_prin = vector_malloc(PARAM_DATA.num_eq);
+    fscanf(input, "num_eq = %d", &PARAM_DATA.num_eq);//get value for number of equations
+    PARAM_DATA.q_i = vector_malloc(PARAM_DATA.num_eq);//assigns memory for the q_i vector
+    PARAM_DATA.I_prin = vector_malloc(PARAM_DATA.num_eq);//assigns memory for the I_prin vector
 
-    for(int i = 0; i < PARAM_DATA.num_eq; i++){
+    for(int i = 0; i < PARAM_DATA.num_eq; i++){//assigns each q_i value
         fscanf(input, "\nq_i[%*c] = %lf", &PARAM_DATA.q_i[i]);
-        printf("q[%d] = %lf\n",i,PARAM_DATA.q_i[i]);
       }
 
-    for(int i = 0; i < PARAM_DATA.num_eq; i++){
+    for(int i = 0; i < PARAM_DATA.num_eq; i++){//assigns each I_prin value
         fscanf(input, "\nI_prin[%*c] = %lf", &PARAM_DATA.I_prin[i]);
-        printf("I[%d] = %lf\n",i,PARAM_DATA.I_prin[i]);
       }
 
-      fscanf(input, "\nt_i = %lf", &PARAM_DATA.t_i);
-      fscanf(input, "\nt_f = %lf", &PARAM_DATA.t_f);
-      fscanf(input, "\nit_max = %d", &PARAM_DATA.it_max);
-      fscanf(input, "\nh = %lf", &PARAM_DATA.h);
-
-      printf("ti = %e\n",PARAM_DATA.t_i);
-      printf("tf = %e\n",PARAM_DATA.t_f);
-      printf("itmax = %d\n",PARAM_DATA.it_max);
-      printf("h = %e\n",PARAM_DATA.h);
-
+    fscanf(input, "\nt_i = %lf", &PARAM_DATA.t_i);//assigns the rest of the variables
+    fscanf(input, "\nt_f = %lf", &PARAM_DATA.t_f);
+    fscanf(input, "\nit_max = %d", &PARAM_DATA.it_max);
+    fscanf(input, "\nh = %lf", &PARAM_DATA.h);
     fclose(input);//close files
     return;
 }
@@ -39,7 +32,6 @@ void ReadInParams(char *input_file){
 void PrintParams(void) {
     FILE *output;// Order of reading-out: mass, x_i, p_i, t_i, t_f, it_max, num_eq, k_spring
     output = fopen("InitParams.dat", "w"); //open file for writing, write each value
-    printf("q3 = %lf\n", PARAM_DATA.q_i[2]);
     fprintf(output, "Number of Diff Equations %d\n", PARAM_DATA.num_eq);
     fprintf(output, "Initial q1 %e\n", (PARAM_DATA.q_i)[0]);
     fprintf(output, "Initial q2 %e\n", (PARAM_DATA.q_i)[1]);
@@ -55,10 +47,13 @@ void PrintParams(void) {
     return;
 }
 
-// void InitializeNeq(double *x, double *p){
-
-
-
-
-//     return;
-// }
+ void InitializeNeq(double *q){
+    for(int i = 0; i < PARAM_DATA.num_eq; i++){//assigns each q_i value
+        q[i] = PARAM_DATA.q_i[i];  
+      }
+    PARAM_DATA.QVelos = (FuncPt *)malloc(sizeof(FuncPt)*PARAM_DATA.num_eq);
+    PARAM_DATA.QVelos[0] = QVelo0;
+    PARAM_DATA.QVelos[1] = QVelo1;
+    PARAM_DATA.QVelos[2] = QVelo2;
+     return;
+ }

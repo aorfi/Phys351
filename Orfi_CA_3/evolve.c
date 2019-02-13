@@ -3,104 +3,55 @@
 #include <math.h>
 #include "evolve.h"
 #include "forces.h"
+#include "params.h"
+#include "vector_mtx.h"
+#include "analysis.h"
 
-void Evolve(double *x, double *p){//runs advanceonestep for each time interval
-    int it, it_max, choice;
-    it_max = PARAM_DATA.it_max;//get values from param
-    choice = PARAM_DATA.choice;
-    //printf("choice = %d \n", choice);
-    for(it = 0; it < it_max; it++){//loops through time and runs AdavanceOneStep each loop
-        AdvanceOneStep(x, p, it, choice);
-    }
-    return;
-}
+void RecordAStep (FILE *output, double t_now, double *q, int numb_eq);
 
-void AdvanceOneStep(double *x, double *p, int it_now, int choice){//depending on choice runs different evolves
-    double x_now, p_now, x_next, p_next;
-    double v, f, h;
-    h = PARAM_DATA.h;//get values from params
-    int it_next;
-    x_now = x[it_now];//set now to the position and momentum at it_now
-    p_now = p[it_now];
-    it_next = it_now +1;
-    if(choice == 1){//Forward Euler
-        ForwardEulerStep(x_now, p_now, &x_next, &p_next,h);
-    }
-    else if(choice == 2){//Backward Euler
-        BackwardEulerStep(x_now, p_now, &x_next, &p_next,h);
-    }
-    else if(choice == 3){//Leapfrog 1
-        Leapfrog1Step(x_now, p_now, &x_next, &p_next, h);
-    }
-    else if(choice == 4){ // Leapfrog 2
-        Leapfrog2Step(x_now, p_now, &x_next, &p_next, h);
-    }
-    else{
-        fprintf(stderr, "choice = %d is not yet implemented.\n", choice);//when choice value is out of range
+void EvolveNeq(double *q){
+    int it, it_max, i, num_eq, count; 
+    double t_now, t_i, h, t_f, t_next, err, tol;
+    FuncPt *QVelos; 
+    double *q_next, *q_tmp;
+    FILE *output;
+
+    t_i = PARAM_DATA.t_i;
+    t_f = PARAM_DATA.t_f;
+    h = PARAM_DATA.h;
+    it_max = PARAM_DATA.it_max;
+    QVelos = PARAM_DATA.QVelos;
+    q_next = vector_malloc(PARAM_DATA.num_eq);//allocated memory for q
+    output = fopen("Orfi_results.dat", "w"); //open file for writing, write each value
+    t_now = t_i;//set this to start
+
+    if(t_f < t_i){
+        fprintf(stderr, "t_f is smaller than t_i");
         exit(1);//exits the program
     }
-    x[it_next] = x_next;//set next to be position and momentum at it_next
-    p[it_next] = p_next;
-    return;
-}
 
-void OneStep(double x_now, double p_now, double x_in, double p_in, double *x_next, double *p_next, double h){//sets x and p
-    double x, p;
-    x = x_now + h*Velocity(p_in);//sets x given an inputed x_now, x_in
-    p = p_now + h*Force(x_in);//sets p given an inputed p_now, p_in
-    *x_next = x;//sets value at x_next as x
-    *p_next = p;//sets value at p_next as p
-    return;
-}
-
-void ForwardEulerStep(double x_now, double p_now, double *x_next, double *p_next, double h){
-    double x, p; 
-    x = x_now;
-    p = p_now;
-    OneStep(x_now, p_now, x, p, x_next, p_next, h);//runs oneStep with x and p in for p_in and x_in
-    return;
-}
-
-void BackwardEulerStep(double x_now, double p_now, double *x_next, double *p_next, double h){
-    double x_1, p_1, x_2, p_2;
-    double err, TOL;
-    int iter, iter_max;
-    iter_max = 100;//max amount of iterations
-    TOL = pow(10,-10);//set 
-    x_1 = x_now;
-    p_1 = p_now;
-    for(iter = 0; iter < iter_max; iter++){//iterates through onstep with x_1 and p_2 as x_in and p_in
-        OneStep(x_now, p_now, x_1, p_1, &x_2, &p_2, h);
-        err = fabs(p_2-p_1)+fabs(x_2-x_1);//calculate err
-        p_1 = p_2;
-        x_1 = x_2;
+    for(it = 0; it < it_max; it++){
+        RecordAStep(output, t_now, q, num_eq);//t_i
+        RK4Step(q, q_next, QVelos, t_now, h, num_eq);
+        q_tmp = q;
+        q = q_next;
+        q_next = q_tmp;
     }
-    if(err >= TOL){//when error is too large
-        fprintf(stderr, "could not converge");
-        exit(1);//exits the program
-    }
-    else{//is error is small enough update x_next and p_next
-        *x_next = x_2;
-        *p_next = p_2;
-    }
+    RecordAStep(output, t_now, q, num_eq);//t_f
+    fclose(output);//close files
+}
+
+void RecordAStep (FILE *output, double t_now, double *q, int numb_eq){
+    double ene; 
+    ene = KineticEnergy(q);//calulate KE
+    fprintf(output, "\n%e  %e %e %e" , t_now, q[0], q[1], q[2], ene);//figure out how to loop this
     return;
 }
 
-void Leapfrog1Step(double x_now, double p_now, double *x_next, double *p_next, double h){
-    double p_step, x_step;
-    p_step = p_now + Force(x_now)*h;//defines p_step
-    x_step = x_now + Velocity(p_step)*h;//defines x_step
-    *x_next = x_step;//reassigns x_next and p_next
-    *p_next = p_step;
-    return;
-}
-
-void Leapfrog2Step(double x_now, double p_now, double *x_next, double *p_next, double h){
-    double p_step, x_step;
-    x_step = x_now + Velocity(p_now)*h;//defines x_step
-    p_step = p_now + Force(x_step)*h;//defines p_step
-    *x_next = x_step;//reassigns x_next and p_next
-    *p_next = p_step;
+void OneStepNeq(double *q_now, double *q_in, double *q_next, FuncPt *QVelos, double t_in, double h, int num_eq){
+    for(int i = 0; i < PARAM_DATA.num_eq; i++){//runs through number of equations
+        q_next[i]= q_now[i] + h*(*QVelos[i])(q_in, t_in, PARAM_DATA.num_eq);//sets next value of q
+    }
     return;
 }
 
