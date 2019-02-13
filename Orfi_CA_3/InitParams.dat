@@ -1,1 +1,11 @@
-Initial Time 
+Number of Diff Equations 3
+Initial q1 3.000000e+00
+Initial q2 4.000000e+00
+Initial q3 9.000000e+00
+Initial Time 0.000000e+00
+Final Time 2.000000e+01
+Number of Time Intervals 1000
+Time Step Size 2.000000e-02
+Initial I1 3.000000e+00
+Initial I2 4.000000e+00
+Initial I3 7.000000e+00
