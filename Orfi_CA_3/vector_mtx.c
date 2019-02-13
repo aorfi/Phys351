@@ -28,7 +28,7 @@ void mtx_free(double **mtx, int mmax){ //memory de-allocation for a matrix
     free(mtx);
 }
 
-void CopyVector(double *a, double *b, int nmax){ //Copy one vector to another
+void Vector_Copy(double *a, double *b, int nmax){ //Copy one vector to another
     for(int i=0; i<=nmax; i++){
         a[i]=b[i];
     }
@@ -40,6 +40,17 @@ int *int_vector_malloc(int nmax){ //memory allocation for a vector with integer 
 
 }
 
+void Vector_APlusScaledBtoA(double *a, double *b, double c, int num_eq){//calculates A+c*B 
+    for(int i = 0; i < num_eq; i++){
+        a[i] =a[i] + c*b[i];
+    }
+}
+
+void Vector_Clear(double *a, int num_eq){//clears 
+    for(int i = 0; i < num_eq; i++){
+        a[i] =0;
+    }
+}
 
 
 

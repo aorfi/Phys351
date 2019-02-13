@@ -20,7 +20,7 @@ int main(int argc, char **argv){
 
     InitializeNeq(q);
 
-    //EvolveNew(q);
+    EvolveNeq(q);
 
     return 0;
 }
