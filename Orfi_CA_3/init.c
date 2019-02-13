@@ -6,19 +6,28 @@
 #include "vector_mtx.h"
 
 void ReadInParams(char *input_file){
+    char str[80];
     PARAM_DATA.q_i = vector_malloc(PARAM_DATA.num_eq);
     FILE *input; // Order of reading-in: mass, x_i, p_i, t_i, t_f, it_max,choice, num_eq, k_spring
     input = fopen(input_file, "r");//open file for reading, read all values
-    fscanf(input, "%d", &PARAM_DATA.num_eq);
-
-    for(int i = 0; i < PARAM_DATA.num_eq; i++){
-        fscanf(input, "%lf", &PARAM_DATA.q_i[i]);
-      }
+    fscanf(input, "num_eq = %d", &PARAM_DATA.num_eq);
     
-    fscanf(input, "t_i = %lf", &PARAM_DATA.t_i);
-    fscanf(input, "t_f = %lf", &PARAM_DATA.t_f);
-    fscanf(input, "it_max = %d", &PARAM_DATA.it_max);
+
+    for(int i = 0; i <= PARAM_DATA.num_eq; i++){
+        fscanf(input, "\nq_i[%*c] = %lf", &PARAM_DATA.q_i[i]);
+        printf("q[%d] = %lf\n",i,PARAM_DATA.q_i[i]);
+      }
+    printf("%d\n", PARAM_DATA.num_eq);
+    printf("%lf\n", PARAM_DATA.q_i[0]);
+    printf("%lf\n", PARAM_DATA.q_i[1]);
+    printf("%lf\n", PARAM_DATA.q_i[2]);
+
+    fscanf(input, "\nt_i = %lf", &PARAM_DATA.t_i);
+    fscanf(input, "\nt_f = %lf", &PARAM_DATA.t_f);
+    fscanf(input, "\nit_max = %d", &PARAM_DATA.it_max);
     PARAM_DATA.h = (PARAM_DATA.t_f - PARAM_DATA.t_i)/((double) PARAM_DATA.it_max);//calculate h
+
+   
     // fscanf(input, "\nI_prin[0] = %d", (&PARAM_DATA.I_prin)[0]);
     // fscanf(input, "\nI_prin[1] = %d", (&PARAM_DATA.I_prin)[1]);
     // fscanf(input, "\nI_prin[2] = %d", (&PARAM_DATA.I_prin)[2]);
@@ -28,7 +37,7 @@ void ReadInParams(char *input_file){
 
 void PrintParams(void) {
     FILE *output;// Order of reading-out: mass, x_i, p_i, t_i, t_f, it_max, num_eq, k_spring
-    output = fopen("InitParams.dat", "w"); //open file for writing, write each value
+    output = fopen("InitParams.dat", "w+"); //open file for writing, write each value
     printf("%lf", PARAM_DATA.t_i);
     //fprintf(output, "Number of Diff Equations %d\n", PARAM_DATA.num_eq);
     

@@ -13,7 +13,7 @@ typedef struct neq_params{
     double *I_prin; //initial values for inertia tensor
 
     FuncPt *QVelos;
-    // double *I_prin;
+    
 }
 
 NeqParams;
