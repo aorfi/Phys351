@@ -1,10 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include "params.h"
 #include "vector_mtx.h"
-#include "params.h" // parameter definitions
-#include "init.h" // initialization functions
-#include "evolve.h" // time evolution
+#include "init.h"
+#include "forces.h"
+#include "evolve.h"
+#include "analysis.h"
 
 int main(int argc, char **argv){
     char *input_file;

@@ -5,7 +5,16 @@
 #include "analysis.h"
 
 double KineticEnergy(double *q){//calulates kinetic energy
-    double K = (1/2)*(PARAM_DATA.I_prin[1]*pow(q[1],2)+PARAM_DATA.I_prin[2]*pow(q[2],2)+PARAM_DATA.I_prin[0]*pow(q[0],2));
-    return K;
+    double k, I1, I2, I3 , q1, q2, q3; 
+    I1 = PARAM_DATA.I_prin[1];
+    I2 = PARAM_DATA.I_prin[2];
+    I3 = PARAM_DATA.I_prin[0];
+
+    q1 = q[1];
+    q2 = q[2];
+    q3 = q[0]; 
+
+    k = (0.5)*( I1 * pow(q1,2) + I2 * pow(q2,2) + I3 * pow(q3,2));
+    return k;
 }
 
