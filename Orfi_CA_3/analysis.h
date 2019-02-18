@@ -1,6 +1,6 @@
 #ifndef ANALYSIS_H
 #define ANALYSIS_H
-//calls WriteResults and GetXP
+//calls Kinetic Energy
 
 double KineticEnergy(double *q);
 

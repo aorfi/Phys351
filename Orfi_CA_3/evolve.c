@@ -14,11 +14,10 @@ void EvolveNeq(double *q){
     double t_now, t_i, h, t_f, t_next, err, tol;
     FuncPt *QVelos; 
     double *q_next, *q_tmp;
-    FILE *output;
+    FILE *output;//set file
     output = fopen("Orfi_results.dat", "w"); //open file for writing, write each value
-    printf("test1\n");
     
-    num_eq = PARAM_DATA.num_eq;
+    num_eq = PARAM_DATA.num_eq;//set variables
     t_i = PARAM_DATA.t_i;
     t_f = PARAM_DATA.t_f;
     h = PARAM_DATA.h;
@@ -27,7 +26,6 @@ void EvolveNeq(double *q){
     q_next = vector_malloc(num_eq);//allocated memory for q
        
     t_now = t_i;//set this to start
-    printf("test2\n");
     
 
     if(t_f < t_i){
@@ -37,14 +35,14 @@ void EvolveNeq(double *q){
     
 
     for(it = 0; it < it_max; it++){
-        RecordAStep(output, t_now, q, num_eq);//t_i
-        RK4Step(q, q_next, QVelos, t_now, h, num_eq); 
-        q_tmp = q; 
+        RecordAStep(output, t_now, q, num_eq);//records before the RK4 for each step
+        RK4Step(q, q_next, QVelos, t_now, h, num_eq); //runs the RK4
+        q_tmp = q; //set the nect variables as the current variables
         q = q_next; 
         q_next = q_tmp; 
         t_now = t_now + h;
     }
-    RecordAStep(output, t_now, q, num_eq);//t_f
+    RecordAStep(output, t_now, q, num_eq);//records after all RK4 runs
     fclose(output);//close files
     return;
     
@@ -53,13 +51,13 @@ void EvolveNeq(double *q){
 void RecordAStep (FILE *output, double t_now, double *q, int numb_eq){
     double ene; 
     ene = KineticEnergy(q);//calulate KE
-    fprintf(output, "%f, %f, %f, %f, %f\n" , t_now, q[1], q[2], q[0], ene);//figure out how to loop this
+    fprintf(output, "%f, %f, %f, %f, %f\n" , t_now, q[1], q[2], q[0], ene);//outputs all t_now, q[1], q[2], q[0], ene to results file
     return;
 }
 
-void OneStepNeq(double *q_now, double *q_in, double *q_next, FuncPt *QVelos, double t_in, double h, int num_eq){
+void OneStepNeq(double *q_now, double *q_in, double *q_next, FuncPt *QVelos, double t_in, double h, int num_eq){//function to run onestep
     for (int i = 0; i < num_eq; i++){
-        q_next[i] = q_now[i] + h*(*QVelos[i])(q_in, t_in, num_eq);
+        q_next[i] = q_now[i] + h*(*QVelos[i])(q_in, t_in, num_eq);//sets q_next depending on force 
     }
     return; 
 }
@@ -69,9 +67,9 @@ void RK4Step(double *q, double *q_next, FuncPt *QVelos, double t_now, double h, 
     double t_half, t_next; 
     static int ind = 0;
     static double *q_local, *q_sum;
-    ind++;
+    ind++;//counter for how many times the function is called
     if(ind == 1){//first time function is called
-        q_local = vector_malloc(num_eq);
+        q_local = vector_malloc(num_eq);//allocates memory 
         q_sum = vector_malloc(num_eq);
     }
     t_half = t_now + (h/2);
@@ -91,7 +89,7 @@ void RK4Step(double *q, double *q_next, FuncPt *QVelos, double t_now, double h, 
 
     Vector_APlusScaleBtoA(q_sum, q, -1.0/2.0, num_eq);//add -1/2 of q to q_sum
 
-    Vector_Copy(q_sum, q_next, num_eq);
+    Vector_Copy(q_sum, q_next, num_eq);//copies final q_sum to q_next 
     return;
 }
 

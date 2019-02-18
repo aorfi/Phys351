@@ -47,7 +47,7 @@ void Vector_APlusScaleBtoA(double *a, double *b, double c, int num_eq){//calcula
 }
 
 
-void Vector_Clear(double *a, int num_eq){
+void Vector_Clear(double *a, int num_eq){//clears a vector
     for (int i = 0 ; i< num_eq; i++){
         a[i] = 0; 
     }

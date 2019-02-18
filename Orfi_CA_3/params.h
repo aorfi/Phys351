@@ -1,7 +1,7 @@
 #ifndef PARAMS_H
 #define PARAMS_H
 
-typedef double (*FuncPt)(double *q, double t, int num_elems);
+typedef double (*FuncPt)(double *q, double t, int num_elems);//defines function type
 
 typedef struct neq_params{
     int num_eq;  //number of first order diff equations

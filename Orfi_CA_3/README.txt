@@ -1,0 +1,1 @@
+Complie main.c analysis.c evolve.c forces.c init.c vector_mtx.c together the run main Orfi_input.txt

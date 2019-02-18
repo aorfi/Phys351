@@ -1,6 +1,7 @@
 #ifndef EVOLVE_H
 #define EVOLVE_H
 #include "params.h"
+//calls evolveNeq OneStepNeq RK4Step
 
 void EvolveNeq(double *q);
 

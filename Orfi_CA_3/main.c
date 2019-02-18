@@ -20,9 +20,9 @@ int main(int argc, char **argv){
 
     q = vector_malloc(PARAM_DATA.num_eq);//allocated memory for q
 
-    InitializeNeq(q);
+    InitializeNeq(q);//initializes q
 
-    EvolveNeq(q);
+    EvolveNeq(q);//evolves q
 
     return 0;
 }
