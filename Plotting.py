@@ -12,10 +12,10 @@ import numpy as np
 
 d = s.data.load(filters="*.dat")
 
-plt.plot(d[1],d[2],'b')
-plt.xlabel("q[1]")
+plt.plot(d[5],d[6],'b')
+plt.xlabel("x1")
 #plt.ylim(40, 43)
-plt.ylabel("q[2]")
-plt.title("q[1] vs q[2]")
+plt.ylabel("y1")
+plt.title("x1 vs y1")
 #plt.gca().legend(('Column 1', 'Column 2' ))
 plt.show
