@@ -1,0 +1,1 @@
+Complite main.c and num_integ.c together then run main

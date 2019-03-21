@@ -12,10 +12,11 @@ import numpy as np
 
 d = s.data.load(filters="*.dat")
 
-plt.plot(d[5],d[6],'b')
-plt.xlabel("x1")
+plt.plot(d[0],d[1],'b')
+plt.xlabel("x")
 #plt.ylim(40, 43)
-plt.ylabel("y1")
-plt.title("x1 vs y1")
+plt.ylabel("y")
+plt.gca().set_aspect('equal', adjustable='box')
+plt.title("Kepler Orbit")
 #plt.gca().legend(('Column 1', 'Column 2' ))
 plt.show
